@@ -1,0 +1,36 @@
+PODS:
+  - Alamofire (4.8.2)
+  - ImageSlideshow (1.8.3):
+    - ImageSlideshow/Core (= 1.8.3)
+  - ImageSlideshow/Core (1.8.3)
+  - ObjectMapper (3.5.1)
+  - SDWebImage (5.5.1):
+    - SDWebImage/Core (= 5.5.1)
+  - SDWebImage/Core (5.5.1)
+  - SVProgressHUD (2.2.5)
+
+DEPENDENCIES:
+  - Alamofire (= 4.8.2)
+  - ImageSlideshow
+  - ObjectMapper
+  - SDWebImage
+  - SVProgressHUD
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - ImageSlideshow
+    - ObjectMapper
+    - SDWebImage
+    - SVProgressHUD
+
+SPEC CHECKSUMS:
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  ImageSlideshow: 4694d7d699a1549582e7cc631fb392d8f91630f3
+  ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
+  SDWebImage: 1245d058b7b8f59adef7a6da6bbafd4f1ab67041
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+
+PODFILE CHECKSUM: bb1e472d09072928a64a1740afd278a942e70fdf
+
+COCOAPODS: 1.8.3
