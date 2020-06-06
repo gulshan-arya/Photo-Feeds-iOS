@@ -36,6 +36,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="zgw-9T-bgw"/>
                                 </constraints>
+                                <color key="barTintColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="4PL-XX-x43" id="11I-We-MGh"/>

@@ -7,7 +7,6 @@
 //  Copyright © 2020 Gulshan. All rights reserved.
 //
 
-
 import ObjectMapper
 
 struct PhotosModel: Mappable {
@@ -28,7 +27,7 @@ struct PhotosModel: Mappable {
 
 struct PhotosFeedModel: Mappable {
 
-    private(set) var photoId  : Int!
+    private(set) var photoId      : Int!
     private(set) var smallImageUrl: String!
     private(set) var largeImageUrl: String!
 

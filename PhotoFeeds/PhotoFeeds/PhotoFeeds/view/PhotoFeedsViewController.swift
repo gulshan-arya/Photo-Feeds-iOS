@@ -32,6 +32,11 @@ class PhotoFeedsViewController: UIViewController {
        setupCollectionView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
     
     //MARK:- Private method(s)
     
@@ -114,17 +119,10 @@ extension PhotoFeedsViewController: UICollectionViewDataSource, UICollectionView
 
 
 extension PhotoFeedsViewController: UISearchBarDelegate {
-  
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         viewModel.searchBarDidEndEditing(with: searchBar.text ?? "")
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        viewModel.searchBarDidEndEditing(with: searchBar.text ?? "")
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
+        return false
     }
 }
 

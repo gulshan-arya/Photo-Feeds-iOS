@@ -11,8 +11,8 @@
 import UIKit
 
 protocol SearchLandingViewModelDelegate: class {
-    
     func refreshUI()
+    func showHideEmptySearchView()
 }
 
 class SearchLandingViewModel {
@@ -33,13 +33,10 @@ class SearchLandingViewModel {
     //MARK:- public method(s)
     func fetchRecentSearches() {
         
-        guard let _ = viewDelegate else {
-            assert(false, "viewDelegate not available for SearchLandingViewModel")
-        }
-        
         databaseQueue.async {
             self.resultSearchResults = self.database.fetchRecentlySearchedImageQueries()
             DispatchQueue.main.async {
+                self.viewDelegate?.showHideEmptySearchView()
                 self.viewDelegate?.refreshUI()
             }
         }
@@ -47,10 +44,3 @@ class SearchLandingViewModel {
     
 }
 
-
-extension SearchLandingViewModel: SearchBarDelegate {
-    
-    func searchBarDidEndEditing(with text: String) {
-        
-    }
-}

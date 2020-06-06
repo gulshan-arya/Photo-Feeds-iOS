@@ -16,10 +16,18 @@
 
 import UIKit
 
+protocol SearchLandingVCDelegate: class {
+    func backButtonTapped(in vc: UIViewController)
+    func searchLandingVC(_ vc: SearchLandingVC, didSelectSearchQuery text:  String)
+}
+
 class SearchLandingVC: UIViewController {
     
     @IBOutlet private weak var searchBar: UISearchBar!
     @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var emptySearchView: UIView!
+    
+    weak var delegate: SearchLandingVCDelegate?
     
     private let viewModel           : SearchLandingViewModel
     private let seachLandingNibName = "SearchLandingVC"
@@ -51,6 +59,9 @@ class SearchLandingVC: UIViewController {
         tableView.register(UINib(nibName: SearchSuggestionCell.id, bundle: .main), forCellReuseIdentifier: SearchSuggestionCell.id)
     }
     
+    @IBAction func backButtonAction(_ sender: Any) {
+        delegate?.backButtonTapped(in: self)
+    }
 }
 
 extension SearchLandingVC: UITableViewDataSource, UITableViewDelegate {
@@ -72,16 +83,16 @@ extension SearchLandingVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        delegate?.searchLandingVC(self, didSelectSearchQuery: viewModel.resultSearchResults[indexPath.row])
+    }
 }
 
 extension SearchLandingVC: UISearchBarDelegate {
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.searchBarDidEndEditing(with: searchBar.text ?? "")
-    }
-    
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        viewModel.searchBarDidEndEditing(with: searchBar.text ?? "")
+        delegate?.searchLandingVC(self, didSelectSearchQuery: searchBar.text ?? "")
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -94,6 +105,12 @@ extension SearchLandingVC: SearchLandingViewModelDelegate {
     func refreshUI() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
+        }
+    }
+    
+    func showHideEmptySearchView() {
+        DispatchQueue.main.async {
+            self.emptySearchView.isHidden = !self.viewModel.resultSearchResults.isEmpty
         }
     }
 }

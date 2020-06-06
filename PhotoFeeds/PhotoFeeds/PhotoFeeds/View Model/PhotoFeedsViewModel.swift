@@ -6,12 +6,13 @@ class PhotoFeedsViewModel {
 
     unowned private var delegate: PhotoFeedsViewModelDelegate!
     
-    private lazy var router: PhotoFeedRouterInterface = PhotoFeedRouter()
+    private lazy var router = PhotoFeedRouter()
     private(set) var photoFeeds = [PhotosFeedModel]()
+    private var searchDataBase: SearchDatabase = UserdefaultsDatabase()
   
     private(set) var isLoading  = false
     private var lastSearchQuery : String?
-    private let pageSize        = 4
+    private let pageSize        = 10
     private var pageNumber      = 1
     private var hasMoreData     = true
     
@@ -24,6 +25,7 @@ class PhotoFeedsViewModel {
     
     init(delegate: PhotoFeedsViewModelDelegate) {
         self.delegate = delegate
+        router.routerToViewModelDelegate = self
     }
     
     //MARK:- Public method(s)
@@ -45,6 +47,16 @@ class PhotoFeedsViewModel {
     }
     
     //MARK:- Private method(s)
+    private func perFormFreshSearchWithText(_ text: String) {
+        if lastSearchQuery == text { return }
+        
+        lastSearchQuery = text
+        photoSearchQueue.addOperation {
+            self.resetPaginationData()
+            self.fetchPhotos(for: text, withNewQuery: true)
+        }
+    }
+    
     private func fetchPhotos(for text: String, withNewQuery isFreshQuery: Bool = false) {
         
         guard !isLoading && hasMoreData else { return }
@@ -52,7 +64,6 @@ class PhotoFeedsViewModel {
         isLoading = true
         NetworkHelper.shared.getPhotosForTextQuery(text, pageSize: pageSize, pageNumber: pageNumber) { result in
         
-            self.lastSearchQuery = nil
             if result.isSuccess {
                 self.photoFeeds = isFreshQuery ? [] : self.photoFeeds
                 self.handleSuccessfullySearchResponse(result.value)
@@ -72,6 +83,7 @@ class PhotoFeedsViewModel {
         pageNumber = hasMoreData ? pageNumber + 1 : pageNumber
         isLoading = false
         updateUI()
+        searchDataBase.saveRecentlySearchImageQuery(lastSearchQuery ?? "")
     }
     
     private func updateUI() {
@@ -86,6 +98,10 @@ class PhotoFeedsViewModel {
         }
     }
     
+    private func isValidSearch(_ text: String) -> Bool {
+        return !(text.count >= 100)
+    }
+    
     private func resetPaginationData() {
         pageNumber = 1
         hasMoreData = true
@@ -93,22 +109,19 @@ class PhotoFeedsViewModel {
     }
 }
 
-extension PhotoFeedsViewModel: SearchBarDelegate {
+extension PhotoFeedsViewModel: PhotoFeedsRouterToViewModelDelegate {
+    
+    func searchLandingVC(_ vc: SearchLandingVC, didSelectSearchQuery text: String) {
+        
+        if isValidSearch(text) {
+            perFormFreshSearchWithText(text)
+        } else {
+            delegate?.showError(ErrorMessages.invalidSearchQueryErrorMsg)
+        }
+    }
     
     func searchBarDidEndEditing(with text: String) {
-        guard let vc = delegate?.viewController else {
-            return
-        }
-        
+        guard let vc = delegate?.viewController else { return }
         router.showSearchlandingVC(in: vc)
-        
-//
-//        if lastSearchQuery == text { return }
-//
-//        lastSearchQuery = text
-//        photoSearchQueue.addOperation {
-//            self.resetPaginationData()
-//            self.fetchPhotos(for: text, withNewQuery: true)
-//        }
     }
 }

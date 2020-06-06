@@ -18,4 +18,5 @@ struct FullScreenSlideShowVCDataSource {
 
 struct ErrorMessages {
     static let emptySearchMessage = "Please try broadening your search for better results."
+    static let invalidSearchQueryErrorMsg = "Length of the search query can not be more than 99"
 }
