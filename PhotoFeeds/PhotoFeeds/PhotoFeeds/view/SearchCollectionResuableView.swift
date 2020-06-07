@@ -10,7 +10,7 @@
 
 import UIKit
 
-class SearchCollectionResuableView: UICollectionReusableView { //Issue in searching
-      
+class SearchCollectionResuableView: UICollectionReusableView {
+    
     @IBOutlet weak var searchBar: UISearchBar!
 }

@@ -9,7 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoFeedViewCell" id="gTV-IL-0wX" customClass="PhotoFeedViewCell" customModule="FlickrPhotos" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoFeedViewCell" id="gTV-IL-0wX" customClass="PhotoFeedViewCell" customModule="PhotoFeeds" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="372" height="252"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -17,15 +17,16 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3bl-qs-tCp">
-                        <rect key="frame" x="0.0" y="0.0" width="372" height="252"/>
+                        <rect key="frame" x="0.5" y="0.5" width="371" height="251"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </imageView>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="3bl-qs-tCp" secondAttribute="trailing" id="2ro-nV-anO"/>
-                <constraint firstItem="3bl-qs-tCp" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="URF-SL-BC4"/>
-                <constraint firstAttribute="bottom" secondItem="3bl-qs-tCp" secondAttribute="bottom" id="WeB-PZ-r0m"/>
-                <constraint firstItem="3bl-qs-tCp" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Yz4-u3-FmB"/>
+                <constraint firstAttribute="bottom" secondItem="3bl-qs-tCp" secondAttribute="bottom" constant="0.5" id="IX8-lB-9VP"/>
+                <constraint firstAttribute="trailing" secondItem="3bl-qs-tCp" secondAttribute="trailing" constant="0.5" id="MUo-eA-6sL"/>
+                <constraint firstItem="3bl-qs-tCp" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="0.5" id="PJ1-ML-DlH"/>
+                <constraint firstItem="3bl-qs-tCp" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="0.5" id="mBT-g1-YKe"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="372" height="252"/>

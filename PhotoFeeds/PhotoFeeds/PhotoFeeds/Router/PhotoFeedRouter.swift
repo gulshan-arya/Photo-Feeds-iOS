@@ -26,9 +26,9 @@ class PhotoFeedRouter: PhotoFeedRouterInterface {
     func presentSlideShowVC(in vc: UIViewController, withDataSource dataSource: FullScreenSlideShowVCDataSource) {
 
         let slideShowVC = FullScreenSlideshowViewController()
-        slideShowVC.modalPresentationStyle = .fullScreen
         slideShowVC.initialPage = dataSource.initialPage
         slideShowVC.inputs      = dataSource.inputSource
+        slideShowVC.modalPresentationStyle = .fullScreen
         slideShowVC.backgroundColor = .systemGray3
         slideShowVC.slideshow.pageIndicator = nil
         vc.present(slideShowVC, animated: true, completion: nil)

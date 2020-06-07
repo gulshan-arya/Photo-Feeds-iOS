@@ -27,31 +27,31 @@ class PhotoFeedsViewController: UIViewController {
     //MARK:- Overriden method(s)
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-       viewModel = PhotoFeedsViewModel(delegate: self)
-       setupCollectionView()
+        
+        viewModel = PhotoFeedsViewModel(delegate: self)
+        setupCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        //addSearchBar()
     }
     
     
     //MARK:- Private method(s)
     
     private func setupCollectionView() {
-
+        
         collectionView.register(UINib(nibName:"PhotoFeedViewCell", bundle: .main), forCellWithReuseIdentifier: "PhotoFeedViewCell")
-      
+        
         let loadingReusableNib = UINib(nibName: "PaganationReusableView", bundle: nil)
         collectionView.register(loadingReusableNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "PaganationReusableView")
     }
-    
 }
 
 extension PhotoFeedsViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-  
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -59,7 +59,7 @@ extension PhotoFeedsViewController: UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel != nil ? viewModel.photoFeeds.count : 0
     }
-        
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         
         if viewModel == nil {
@@ -72,9 +72,9 @@ extension PhotoFeedsViewController: UICollectionViewDataSource, UICollectionView
         let width = UIScreen.main.bounds.width / 2 
         return CGSize(width: width, height: width * 3/4)
     }
-        
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
         if kind == UICollectionView.elementKindSectionFooter {
             let aFooterView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PaganationReusableView", for: indexPath) as! PaganationReusableView
             loadingView = aFooterView
@@ -97,7 +97,7 @@ extension PhotoFeedsViewController: UICollectionViewDataSource, UICollectionView
             self.loadingView?.starAnimating()
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
         if elementKind == UICollectionView.elementKindSectionFooter {
             self.loadingView?.stopAnimating()
@@ -119,7 +119,7 @@ extension PhotoFeedsViewController: UICollectionViewDataSource, UICollectionView
 
 
 extension PhotoFeedsViewController: UISearchBarDelegate {
-
+    
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         viewModel.searchBarDidEndEditing(with: searchBar.text ?? "")
         return false
@@ -134,29 +134,21 @@ extension PhotoFeedsViewController: PhotoFeedsViewModelDelegate {
     }
     
     func refreshView() {
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
+        collectionView.reloadData()
     }
     
     func showError(_ errorMessage: String) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
-            self.present(alert, animated: true)
-        }
+        let alert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+        present(alert, animated: true)
     }
     
     func showEmptySearchResultView(with message: String) {
-        DispatchQueue.main.async {
-            self.emptySearchView.isHidden = false
-            self.emptySearchDescriptionLabel.text = message
-        }
+        emptySearchView.isHidden = false
+        emptySearchDescriptionLabel.text = message
     }
     
     func hideEmptySearchResultView() {
-        DispatchQueue.main.async {
-            self.emptySearchView.isHidden = true
-        }
+        emptySearchView.isHidden = true
     }
 }

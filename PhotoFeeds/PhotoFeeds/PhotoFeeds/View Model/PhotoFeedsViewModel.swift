@@ -3,13 +3,13 @@
 import UIKit
 
 class PhotoFeedsViewModel {
-
+    
     unowned private var delegate: PhotoFeedsViewModelDelegate!
     
     private lazy var router = PhotoFeedRouter()
     private(set) var photoFeeds = [PhotosFeedModel]()
     private var searchDataBase: SearchDatabase = UserdefaultsDatabase()
-  
+    
     private(set) var isLoading  = false
     private var lastSearchQuery : String?
     private let pageSize        = 10
@@ -30,12 +30,12 @@ class PhotoFeedsViewModel {
     
     //MARK:- Public method(s)
     func loadMoreImages(for searchQueuy: String) {
-
+        
         photoSearchQueue.addOperation {
             self.fetchPhotos(for: searchQueuy)
         }
     }
-   
+    
     func collectionViewDidSelectItem(at indexPath: IndexPath) {
         guard let vc = delegate?.viewController else {
             return
@@ -47,7 +47,7 @@ class PhotoFeedsViewModel {
     }
     
     //MARK:- Private method(s)
-    private func perFormFreshSearchWithText(_ text: String) {
+    private func performFreshSearchWithText(_ text: String) {
         if lastSearchQuery == text { return }
         
         lastSearchQuery = text
@@ -61,41 +61,43 @@ class PhotoFeedsViewModel {
         
         guard !isLoading && hasMoreData else { return }
         
+        if pageNumber == 1 { ProgressIndicator.startAnimation() }
         isLoading = true
-        NetworkHelper.shared.getPhotosForTextQuery(text, pageSize: pageSize, pageNumber: pageNumber) { result in
         
-            if result.isSuccess {
-                self.photoFeeds = isFreshQuery ? [] : self.photoFeeds
-                self.handleSuccessfullySearchResponse(result.value)
-            } else {
-                self.delegate?.showError((result.error ?? NSError.genericError()).localizedDescription)
+        NetworkHelper.shared.getPhotosForTextQuery(text, pageSize: pageSize, pageNumber: pageNumber) { result in
+            DispatchQueue.main.async {
+                ProgressIndicator.stopAnimation()
+                if result.isSuccess {
+                    self.photoFeeds = isFreshQuery ? [] : self.photoFeeds
+                    self.handleSuccessfullySearchResponse(result.value)
+                } else {
+                    self.delegate?.showError((result.error ?? NSError.genericError()).localizedDescription)
+                }
             }
         }
     }
-
+    
     private func handleSuccessfullySearchResponse(_ result: PhotosModel?) {
         
         if let photos = result?.photos, !photos.isEmpty {
-            self.photoFeeds.append(contentsOf: photos)
+            searchDataBase.saveRecentlySearchImageQuery(lastSearchQuery ?? "")
+            photoFeeds.append(contentsOf: photos)
         }
         
         hasMoreData = !(result?.photos?.isEmpty ?? true)
         pageNumber = hasMoreData ? pageNumber + 1 : pageNumber
         isLoading = false
         updateUI()
-        searchDataBase.saveRecentlySearchImageQuery(lastSearchQuery ?? "")
     }
     
     private func updateUI() {
-        DispatchQueue.main.async {
-            if self.photoFeeds.isEmpty {
-                self.delegate?.showEmptySearchResultView(with: ErrorMessages.emptySearchMessage)
-            } else {
-                self.delegate?.hideEmptySearchResultView()
-            }
-            
-            self.delegate?.refreshView()
+        if self.photoFeeds.isEmpty {
+            self.delegate?.showEmptySearchResultView(with: ErrorMessages.emptySearchMessage)
+        } else {
+            self.delegate?.hideEmptySearchResultView()
         }
+        
+        self.delegate?.refreshView()
     }
     
     private func isValidSearch(_ text: String) -> Bool {
@@ -114,7 +116,7 @@ extension PhotoFeedsViewModel: PhotoFeedsRouterToViewModelDelegate {
     func searchLandingVC(_ vc: SearchLandingVC, didSelectSearchQuery text: String) {
         
         if isValidSearch(text) {
-            perFormFreshSearchWithText(text)
+            performFreshSearchWithText(text)
         } else {
             delegate?.showError(ErrorMessages.invalidSearchQueryErrorMsg)
         }

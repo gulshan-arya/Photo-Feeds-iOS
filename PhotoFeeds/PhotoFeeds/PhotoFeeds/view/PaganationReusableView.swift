@@ -9,22 +9,22 @@
 import UIKit
 
 class PaganationReusableView: UICollectionReusableView {
-
-   @IBOutlet private weak var animator: UIActivityIndicatorView!
-      
-     override func awakeFromNib() {
-         super.awakeFromNib()
-         
-         animator.stopAnimating()
-         backgroundColor = UIColor.clear
-     }
-     
-     //MARK:- Public method(s)
-     func starAnimating() {
-         animator.startAnimating()
-     }
-     
-     func stopAnimating() {
-         animator.stopAnimating()
-     }
+    
+    @IBOutlet private weak var animator: UIActivityIndicatorView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        animator.stopAnimating()
+        backgroundColor = UIColor.clear
+    }
+    
+    //MARK:- Public method(s)
+    func starAnimating() {
+        animator.startAnimating()
+    }
+    
+    func stopAnimating() {
+        animator.stopAnimating()
+    }
 }
