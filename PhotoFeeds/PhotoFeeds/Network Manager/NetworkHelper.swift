@@ -3,6 +3,7 @@ import ObjectMapper
 import Alamofire
 
 
+/// It is acting like an interface who knows which manager to use for making the api call.
 class NetworkHelper {
 
     static let shared = NetworkHelper()

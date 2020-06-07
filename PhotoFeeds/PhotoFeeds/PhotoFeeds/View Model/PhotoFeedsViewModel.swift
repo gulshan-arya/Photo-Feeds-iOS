@@ -2,6 +2,11 @@
 
 import UIKit
 
+/*
+ PhotoFeedsViewModel is responsible for  handling the view interactions and contains the business logic for showing the images based
+ on text passed from the view. It also helps the router for routing to different screens based on the UI events received
+ from the view. Finally it stores the successfull user search queries to database with the help of search databse.
+ */
 class PhotoFeedsViewModel {
     
     unowned private var delegate: PhotoFeedsViewModelDelegate!

@@ -3,6 +3,7 @@ import UIKit
 import Alamofire
 import ObjectMapper
 
+/// NetworkManager will handle any HTTP request. But for now only get is supported.
 class NetworkManager {
     
     static let reachabilityManager = NetworkReachabilityManager(host: "https://users.zilingo.com")

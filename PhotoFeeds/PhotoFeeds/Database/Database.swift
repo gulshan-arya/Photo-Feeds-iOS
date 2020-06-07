@@ -16,6 +16,8 @@ protocol DatabaseLike {
     var type: DatabaseType { get }
 }
 
+/// Base type for any database which will have search functionality e.g it can be userdefaults, realm or coredata but the method(s) should be the same for scaling it.
+/// Anyone database that we will use should implement this type
 protocol SearchDatabase {
     
     func fetchRecentlySearchedImageQueries() -> [String]

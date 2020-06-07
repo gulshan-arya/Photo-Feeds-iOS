@@ -18,6 +18,9 @@ protocol PhotoFeedsRouterToViewModelDelegate: class {
     func searchLandingVC(_ vc: SearchLandingVC, didSelectSearchQuery text: String)
 }
 
+/*
+ This class is responsible for doing the routing to different screens related to photo feeds based on the input received from PhotoFeedsViewModel
+ */
 class PhotoFeedRouter: PhotoFeedRouterInterface {
     
     weak var routerToViewModelDelegate: PhotoFeedsRouterToViewModelDelegate?

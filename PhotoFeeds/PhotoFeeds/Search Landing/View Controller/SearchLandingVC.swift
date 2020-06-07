@@ -21,6 +21,12 @@ protocol SearchLandingVCDelegate: class {
     func searchLandingVC(_ vc: SearchLandingVC, didSelectSearchQuery text:  String)
 }
 
+
+/*
+ SearchLandingVC handles the actual text searching and passed back the search text via delegation. This class is made for decoupling the
+ search logic from the root screens, who want to have search functionality e.g PhotoFeeds.
+ */
+
 class SearchLandingVC: UIViewController {
     
     @IBOutlet private weak var searchBar: UISearchBar!

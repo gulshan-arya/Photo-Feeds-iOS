@@ -13,6 +13,9 @@ import ObjectMapper
 import SDWebImage
 import ImageSlideshow
 
+/*
+ This class is responsible for showing images based on the query entered by the user.
+ */
 class PhotoFeedsViewController: UIViewController {
     
     @IBOutlet private weak var collectionView               : UICollectionView!
